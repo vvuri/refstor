@@ -31,4 +31,5 @@
 1. Создание репозитория
 2. Перенос шаблона прокта
 3. Go + Chi - https://github.com/go-chi/chi
-2. 
+4. $  go mod init refstor
+5. 
