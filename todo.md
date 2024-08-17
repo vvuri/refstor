@@ -31,5 +31,19 @@
 1. Создание репозитория
 2. Перенос шаблона прокта
 3. Go + Chi - https://github.com/go-chi/chi
-4. $  go mod init refstor
-5. 
+4. $ go mod init refstor
+5. $ go mod vendor
+6. $ go get github.com/lpernett/godotenv
+7. $ go get -u github.com/go-chi/chi/v5
+8. $ go get github.com/go-chi/render
+9. Create Vue Client
+- $ npm create vue@latest
+- $ cd client
+- $ npm install
+- $ npm run dev
+- Open http://localhost:5173/
+
+
+
+
+
