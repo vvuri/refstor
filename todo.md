@@ -42,7 +42,7 @@
 - $ npm install
 - $ npm run dev
 - Open http://localhost:5173/
-
+- Test API in windows: ```Invoke-WebRequest -Uri http://localhost:5001/api/img/234 -Method "PUT"```
 
 
 
