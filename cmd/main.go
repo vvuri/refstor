@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"os/signal"
 	"refstor/cmd/application"
 
 	"github.com/lpernett/godotenv"
@@ -24,9 +25,14 @@ func main() {
 	config["port"] = PORT
 
 	app := application.New(config)
+
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
+
 	log.Info("Server starting on port:" + PORT)
-	err = app.Start(context.TODO())
+	err = app.Start(ctx)
 	if err != nil {
 		log.Error("Start app:", err)
 	}
+
 }

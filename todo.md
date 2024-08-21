@@ -47,6 +47,7 @@
 - $ choco install redis-64 --version 3.0.503 - не работает
 - WSL + $ sudo apt-get install redis
 - получаем  /usr/bin/redis-server 127.0.0.1:6379
+- $ redis-cli  +  ping
 - $ go get github.com/redis/go-redis/v9
 
 
