@@ -13,13 +13,17 @@ func main() {
 	var log *slog.Logger
 	log = slog.New(slog.NewTextHandler(os.Stderr, nil))
 
+	// TODO - create config file
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Error("Error loading .env file")
 	}
 	PORT := os.Getenv("PORT")
 
-	app := application.New(PORT)
+	config := make(map[string]string)
+	config["port"] = PORT
+
+	app := application.New(config)
 	log.Info("Server starting on port:" + PORT)
 	err = app.Start(context.TODO())
 	if err != nil {

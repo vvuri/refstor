@@ -43,6 +43,12 @@
 - $ npm run dev
 - Open http://localhost:5173/
 - Test API in windows: ```Invoke-WebRequest -Uri http://localhost:5001/api/img/234 -Method "PUT"```
+10. Redis install:
+- $ choco install redis-64 --version 3.0.503 - не работает
+- WSL + $ sudo apt-get install redis
+- получаем  /usr/bin/redis-server 127.0.0.1:6379
+- $ go get github.com/redis/go-redis/v9
+
 
 
 
