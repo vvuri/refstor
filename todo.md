@@ -49,6 +49,9 @@
 - получаем  /usr/bin/redis-server 127.0.0.1:6379
 - $ redis-cli  +  ping
 - $ go get github.com/redis/go-redis/v9
+11. UUID
+- $ go get github.com/google/uuid
+- 
 
 
 
