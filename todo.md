@@ -51,7 +51,17 @@
 - $ go get github.com/redis/go-redis/v9
 11. UUID
 - $ go get github.com/google/uuid
-- 
+
+
+## Vue
+1. $ npm install -g @vue/cli
+2. $ npm vue --version
+  10.8.3
+3. $ vue --version
+   @vue/cli 5.0.8
+4. Add Vuetify
+- $ vue add vuetify
+4
 
 
 

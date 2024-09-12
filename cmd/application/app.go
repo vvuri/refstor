@@ -16,9 +16,9 @@ type App struct {
 
 func New(config map[string]string) *App {
 	app := &App{
-		router: loadRoutes(),
-		port:   config["port"],
-		rdb:    redis.NewClient(&redis.Options{}),
+		//router: loadRoutes(),
+		port: config["port"],
+		rdb:  redis.NewClient(&redis.Options{}),
 	}
 	return app
 }
