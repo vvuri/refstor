@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func (a *App) loadRoutes() *chi.Mux {
+func (a *App) loadRoutes() {
 	router := chi.NewRouter()
 
 	router.Use(middleware.RequestID)

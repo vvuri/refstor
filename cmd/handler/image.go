@@ -3,9 +3,12 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"refstor/cmd/repository"
 )
 
-type Image struct{}
+type Image struct {
+	Repo *repository.RedisRepo
+}
 
 func (i *Image) List(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("List of all Images")

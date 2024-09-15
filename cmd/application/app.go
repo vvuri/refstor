@@ -20,6 +20,9 @@ func New(config map[string]string) *App {
 		port: config["port"],
 		rdb:  redis.NewClient(&redis.Options{}),
 	}
+
+	app.loadRoutes()
+	
 	return app
 }
 

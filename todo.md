@@ -61,7 +61,12 @@
    @vue/cli 5.0.8
 4. Add Vuetify
 - $ vue add vuetify
-4
+- Error
+5. Run:
+- $ vue ui
+- http://localhost:8000/project/select
+6. 
+
 
 
 
