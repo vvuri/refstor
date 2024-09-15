@@ -32,7 +32,7 @@ func (r *RedisRepo) Insert(ctx context.Context, image model.Image) error {
 
 	txn := r.Client.TxPipeline()
 
-	res := txn.Client.SetNX(ctx, key, string(data), 0)
+	res := txn.SetNX(ctx, key, string(data), 0)
 	if err := res.Err(); err != nil {
 		txn.Discard()
 		return fmt.Errorf("Fail to set: %w", err)
@@ -55,7 +55,7 @@ var ErrNotExist = errors.New("image do not exist")
 func (r *RedisRepo) FindByID(ctx context.Context, sid string) (model.Image, error) {
 	key := imageIDKey(sid)
 	value, err := r.Client.Get(ctx, key).Result()
-	if erroer.Is(err, redis.Nil) {
+	if errors.Is(err, redis.Nil) {
 		return model.Image{}, ErrNotExist
 	} else if err != nil {
 		return model.Image{}, fmt.Errorf("Fail to get by id: %w", err)
@@ -74,8 +74,8 @@ func (r *RedisRepo) DeleteByID(ctx context.Context, sid string) error {
 
 	txn := r.Client.TxPipeline()
 
-	err := txn.Client.Del(ctx, key).Err()
-	if erroer.Is(err, redis.Nil) {
+	err := txn.Del(ctx, key).Err()
+	if errors.Is(err, redis.Nil) {
 		txn.Discard()
 		return ErrNotExist
 	} else if err != nil {
@@ -92,7 +92,7 @@ func (r *RedisRepo) DeleteByID(ctx context.Context, sid string) error {
 		return fmt.Errorf("Fail to exec: %w", err)
 	}
 
-	returm nil
+	return nil
 }
 
 func (r *RedisRepo) Update(ctx context.Context, image model.Image) error {
@@ -101,7 +101,7 @@ func (r *RedisRepo) Update(ctx context.Context, image model.Image) error {
 		return fmt.Errorf("Fail to encode image: %w", err)
 	}
 
-	key := imageIDKey(data.ImageID)
+	key := imageIDKey(image.ImageID)
 
 	res := r.Client.SetNX(ctx, key, string(data), 0)
 	if err := res.Err(); err != nil {
@@ -112,7 +112,7 @@ func (r *RedisRepo) Update(ctx context.Context, image model.Image) error {
 }
 
 type FindAllPage struct {
-	Size uint64
+	Size   uint64
 	Offset uint64
 }
 
@@ -121,7 +121,7 @@ type FindResult struct {
 	Cursor uint64
 }
 
-func (r *RedisRepo) FindAll(ctx context.Context, page FindAllPage ) (FindResult, error) {
+func (r *RedisRepo) FindAll(ctx context.Context, page FindAllPage) (FindResult, error) {
 	res := r.Client.SScan(ctx, "images", page.Offset, "*", int64(page.Size))
 
 	keys, cursor, err := res.Result()
@@ -130,7 +130,9 @@ func (r *RedisRepo) FindAll(ctx context.Context, page FindAllPage ) (FindResult,
 	}
 
 	if len(keys) == 0 {
-		return FindResult{Images: []model.Image}, nil
+		return FindResult{
+			Images: []model.Image{},
+		}, nil
 	}
 
 	xs, err := r.Client.MGet(ctx, keys...).Result()
@@ -140,7 +142,7 @@ func (r *RedisRepo) FindAll(ctx context.Context, page FindAllPage ) (FindResult,
 
 	images := make([]model.Image, len(xs))
 
-	for i,x := range xs {
+	for i, x := range xs {
 		x := x.(string)
 		var image model.Image
 
@@ -152,5 +154,5 @@ func (r *RedisRepo) FindAll(ctx context.Context, page FindAllPage ) (FindResult,
 		images[i] = image
 	}
 
-	return FindResult{ Images: images, Cursor: cursor }, nil
+	return FindResult{Images: images, Cursor: cursor}, nil
 }

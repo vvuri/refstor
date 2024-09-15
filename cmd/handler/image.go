@@ -29,14 +29,14 @@ func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
 	now := time.Now().UTC()
 
 	image := model.Image{
-		ImageID:     uuid.Nil,
+		ImageID:     uuid.NewString(), // ToDo: Fix it
 		Description: body.Description,
 		SmallImg:    nil,
 		Date:        &now,
 		URL:         body.Link,
 	}
 
-	err = i.Repo.Insert(r.Context(), image)
+	err := i.Repo.Insert(r.Context(), image)
 	if err != nil {
 		fmt.Println("failed to insert record:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -62,9 +62,9 @@ func (i *Image) ImageByID(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Images by id")
 }
 
-func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Create new link with Images")
-}
+//func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
+//	fmt.Println("Create new link with Images")
+//}
 
 func (i *Image) UpdateByID(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Update Images by id")
