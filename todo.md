@@ -51,7 +51,27 @@
 - $ go get github.com/redis/go-redis/v9
 11. UUID
 - $ go get github.com/google/uuid
-
+12. Test Created request:
+- $ curl -X POST -d '{}' 192.168.1.110:5001/api/img
+  {"uuid":"a15bd769-649d-451c-b707-17631744aae6","description":"","small_img":null,"date":"2024-09-16T21:19:12.5215519Z","url":""}
+- $ redis-cli KEYS '*'
+  1) "images"
+  2) "image:323842323131354541353232"
+- $ redis-cli
+  127.0.0.1:6379> GET "image:323842323131354541353232"
+  "{\"uuid\":\"a15bd769-649d-451c-b707-17631744aae6\",\"description\":\"\",\"small_img\":null,\"date\":\"2024-09-16T21:19:12.5215519Z\",\"url\":\"\"}"
+13. Test create with param
+- $ curl -X POST -d '{"description":"text for link","link":"ya.ru/img1"}' 192.168.1.110:5001/api/img
+  {"uuid":"36d4893f-95c4-4f66-819f-fa943365a496","description":"text for link","small_img":null,"date":"2024-09-16T22:26:12.1160674Z","url":"ya.ru/img1"}
+- $ redis-cli
+  127.0.0.1:6379> keys *
+  127.0.0.1:6379> GET "image:304637463630413046343745"
+  "{\"uuid\":\"36d4893f-95c4-4f66-819f-fa943365a496\",\"description\":\"text for link\",\"small_img\":null,\"date\":\"2024-09-16T22:26:12.1160674Z\",\"url\":\"ya.ru/img1\"}"
+14. All values in key:images
+    127.0.0.1:6379> smembers "images"
+    1) "image:323842323131354541353232"
+    2) "image:304637463630413046343745"
+15. 
 
 ## Vue
 1. $ npm install -g @vue/cli
@@ -67,8 +87,29 @@
 - http://localhost:8000/project/select
 6. 
 
-
-
+## Redis CLI
+- List all keys using the KEYS command:
+  $ redis-cli KEYS '*'
+- Get all keys from redis-cli
+  redis 127.0.0.1:6379> keys *
+- Get list of patterns
+  redis 127.0.0.1:6379> keys d??
+- This will produce keys which start by 'd' with three characters.
+  redis 127.0.0.1:6379> keys *t*
+- This wil get keys with matches 't' character in key
+- Count keys from command line by
+  redis-cli keys * |wc -l 
+- Or you can use dbsize
+  redis-cli dbsize
+- Here are the commands to retrieve key value(s):
+  if value is of type string -> GET <key>
+  if value is of type hash -> HGET or HMGET or HGETALL <key>
+  if value is of type lists -> lrange <key> <start> <end>
+  if value is of type sets -> smembers <key>
+  if value is of type sorted sets -> ZRANGEBYSCORE <key> <min> <max>
+  if value is of type stream -> xread count <count> streams <key> <ID>. https://redis.io/commands/xread
+- Use the TYPE command to check the type of value a key is mapping to:
+  type <key>
 
 
 
