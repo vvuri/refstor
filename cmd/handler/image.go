@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"refstor/cmd/model"
 	"refstor/cmd/repository"
+	"strconv"
 	"time"
 )
 
@@ -56,6 +57,46 @@ func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
 
 func (i *Image) List(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("List of all Images")
+	cursorStr := r.URL.Query().Get("cursor")
+	if cursorStr == "" {
+		cursorStr = "0"
+	}
+
+	const decimal = 10
+	const bitSize = 64
+	cursor, err := strconv.ParseUint(cursorStr, decimal, bitSize)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	const size = 20
+	res, err := i.Repo.FindAll(r.Context(), repository.FindAllPage{
+		Offset: cursor,
+		Size:   size,
+	})
+	if err != nil {
+		fmt.Println("failed to find all records:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var response struct {
+		Items []model.Image `json:"items"`
+		Next  uint64        `json:"next,omitempty"`
+	}
+	response.Items = res.Images
+	response.Next = res.Cursor
+
+	data, err := json.Marshal(response)
+	if err != nil {
+		fmt.Println("failed to marshal json records:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(data)
+	w.WriteHeader(http.StatusOK)
 }
 
 func (i *Image) ImageByID(w http.ResponseWriter, r *http.Request) {

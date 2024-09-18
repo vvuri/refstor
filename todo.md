@@ -71,7 +71,12 @@
     127.0.0.1:6379> smembers "images"
     1) "image:323842323131354541353232"
     2) "image:304637463630413046343745"
-15. 
+15. Test List Get tequest
+    $ sudo apt  install jq
+    $ curl -sS 192.168.1.110:5001/api/img | jq
+16. -
+ 
+    
 
 ## Vue
 1. $ npm install -g @vue/cli
