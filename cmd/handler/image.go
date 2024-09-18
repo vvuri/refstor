@@ -2,7 +2,9 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"net/http"
 	"refstor/cmd/model"
@@ -56,7 +58,7 @@ func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (i *Image) List(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("List of all Images")
+	//fmt.Println("List of all Images")
 	cursorStr := r.URL.Query().Get("cursor")
 	if cursorStr == "" {
 		cursorStr = "0"
@@ -101,16 +103,50 @@ func (i *Image) List(w http.ResponseWriter, r *http.Request) {
 
 func (i *Image) ImageByID(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Images by id")
+	idParam := chi.URLParam(r, "id")
+
+	if len(idParam) > 40 {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	o, err := i.Repo.FindByID(r.Context(), idParam)
+	if errors.Is(err, repository.ErrNotExist) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	} else if err != nil {
+		fmt.Println("failed to find by id:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if err := json.NewEncoder(w).Encode(o); err != nil {
+		fmt.Println("failed to marshal:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
 
-//func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println("Create new link with Images")
-//}
-
 func (i *Image) UpdateByID(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Update Images by id")
+	fmt.Println("Update Images by id - not implement")
 }
 
 func (i *Image) Delete(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Delete Images by id")
+	// fmt.Println("Delete Images by id")
+	idParam := chi.URLParam(r, "id")
+
+	if len(idParam) > 40 {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err := i.Repo.DeleteByID(r.Context(), idParam)
+	if errors.Is(err, repository.ErrNotExist) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	} else if err != nil {
+		fmt.Println("failed to find by id:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
