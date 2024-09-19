@@ -4,8 +4,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
-	"refstor/cmd/handler"
-	"refstor/cmd/repository"
+	"refstor/cmd/image"
 )
 
 func (a *App) loadRoutes() {
@@ -26,8 +25,8 @@ func (a *App) loadRoutes() {
 }
 
 func (a *App) loadImageRoutes(router chi.Router) {
-	imageHandler := &handler.Image{
-		Repo: &repository.RedisRepo{
+	imageHandler := &image.Image{
+		Repo: &image.RedisRepo{
 			Client: a.rdb,
 		},
 	}

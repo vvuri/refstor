@@ -1,20 +1,27 @@
-package handler
+package image
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"net/http"
-	"refstor/cmd/model"
-	"refstor/cmd/repository"
 	"strconv"
 	"time"
 )
 
+type Repo interface {
+	Insert(ctx context.Context, image ImageLink) error
+	FindByID(ctx context.Context, sid string) (ImageLink, error)
+	FindAll(ctx context.Context, page FindAllPage) (FindResult, error)
+	Update(ctx context.Context, image ImageLink) error
+	DeleteByID(ctx context.Context, sid string) error
+}
+
 type Image struct {
-	Repo *repository.RedisRepo
+	Repo Repo //*RedisRepo
 }
 
 func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +38,7 @@ func (i *Image) Create(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().UTC()
 
-	image := model.Image{
+	image := ImageLink{
 		ImageID:     uuid.NewString(), // ToDo: Fix it
 		Description: body.Description,
 		SmallImg:    nil,
@@ -73,7 +80,7 @@ func (i *Image) List(w http.ResponseWriter, r *http.Request) {
 	}
 
 	const size = 20
-	res, err := i.Repo.FindAll(r.Context(), repository.FindAllPage{
+	res, err := i.Repo.FindAll(r.Context(), FindAllPage{
 		Offset: cursor,
 		Size:   size,
 	})
@@ -84,8 +91,8 @@ func (i *Image) List(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var response struct {
-		Items []model.Image `json:"items"`
-		Next  uint64        `json:"next,omitempty"`
+		Items []ImageLink `json:"items"`
+		Next  uint64      `json:"next,omitempty"`
 	}
 	response.Items = res.Images
 	response.Next = res.Cursor
@@ -111,7 +118,7 @@ func (i *Image) ImageByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	o, err := i.Repo.FindByID(r.Context(), idParam)
-	if errors.Is(err, repository.ErrNotExist) {
+	if errors.Is(err, ErrNotExist) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {
@@ -141,7 +148,7 @@ func (i *Image) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := i.Repo.DeleteByID(r.Context(), idParam)
-	if errors.Is(err, repository.ErrNotExist) {
+	if errors.Is(err, ErrNotExist) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {

@@ -1,10 +1,10 @@
-package model
+package image
 
 import (
 	"time"
 )
 
-type Image struct {
+type ImageLink struct {
 	ImageID     string     `json:"uuid"` // UUIDv4
 	Description string     `json:"description"`
 	SmallImg    []byte     `json:"small_img"` // save as "image/png" in base64

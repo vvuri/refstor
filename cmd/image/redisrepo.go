@@ -1,4 +1,4 @@
-package repository
+package image
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
-	"refstor/cmd/model"
 )
 
 type RedisRepo struct {
@@ -20,7 +19,7 @@ func imageIDKey(sid string) string {
 	return fmt.Sprintf("image:%X", sid)
 }
 
-func (r *RedisRepo) Insert(ctx context.Context, image model.Image) error {
+func (r *RedisRepo) Insert(ctx context.Context, image ImageLink) error {
 	data, err := json.Marshal(image)
 	if err != nil {
 		return fmt.Errorf("Fail to encode image: %w", err)
@@ -52,19 +51,19 @@ func (r *RedisRepo) Insert(ctx context.Context, image model.Image) error {
 
 var ErrNotExist = errors.New("image do not exist")
 
-func (r *RedisRepo) FindByID(ctx context.Context, sid string) (model.Image, error) {
+func (r *RedisRepo) FindByID(ctx context.Context, sid string) (ImageLink, error) {
 	key := imageIDKey(sid)
 	value, err := r.Client.Get(ctx, key).Result()
 	if errors.Is(err, redis.Nil) {
-		return model.Image{}, ErrNotExist
+		return ImageLink{}, ErrNotExist
 	} else if err != nil {
-		return model.Image{}, fmt.Errorf("Fail to get by id: %w", err)
+		return ImageLink{}, fmt.Errorf("Fail to get by id: %w", err)
 	}
 
-	var image model.Image
+	var image ImageLink
 	err = json.Unmarshal([]byte(value), &image)
 	if err != nil {
-		return model.Image{}, fmt.Errorf("Fail to decode image json: %w", err)
+		return ImageLink{}, fmt.Errorf("Fail to decode image json: %w", err)
 	}
 	return image, nil
 }
@@ -95,7 +94,7 @@ func (r *RedisRepo) DeleteByID(ctx context.Context, sid string) error {
 	return nil
 }
 
-func (r *RedisRepo) Update(ctx context.Context, image model.Image) error {
+func (r *RedisRepo) Update(ctx context.Context, image ImageLink) error {
 	data, err := json.Marshal(image)
 	if err != nil {
 		return fmt.Errorf("Fail to encode image: %w", err)
@@ -117,7 +116,7 @@ type FindAllPage struct {
 }
 
 type FindResult struct {
-	Images []model.Image
+	Images []ImageLink
 	Cursor uint64
 }
 
@@ -131,7 +130,7 @@ func (r *RedisRepo) FindAll(ctx context.Context, page FindAllPage) (FindResult, 
 
 	if len(keys) == 0 {
 		return FindResult{
-			Images: []model.Image{},
+			Images: []ImageLink{},
 		}, nil
 	}
 
@@ -140,11 +139,11 @@ func (r *RedisRepo) FindAll(ctx context.Context, page FindAllPage) (FindResult, 
 		return FindResult{}, fmt.Errorf("Failed to get images: %w", err)
 	}
 
-	images := make([]model.Image, len(xs))
+	images := make([]ImageLink, len(xs))
 
 	for i, x := range xs {
 		x := x.(string)
-		var image model.Image
+		var image ImageLink
 
 		err := json.Unmarshal([]byte(x), &image)
 		if err != nil {
