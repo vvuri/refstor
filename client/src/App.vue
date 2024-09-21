@@ -1,26 +1,29 @@
 <template>
   <v-app>
-    <v-alert>1</v-alert>
-    <v-navigation-drawer app>
-      <!-- -->
-      Menu
-    </v-navigation-drawer>
+<!--    <v-alert>1</v-alert>-->
+
     <v-app-bar app color="primary" dark>
       <v-icon aria-hidden="false">
-        mdi-account
+        mdi-menu
       </v-icon>
-      <v-spacer></v-spacer>
+<!--          <v-navigation-drawer app>-->
+<!--            Menu-->
+<!--          </v-navigation-drawer>-->
+
+
     </v-app-bar>
     <v-main>
-      My collection
-      <v-card elevation="2"></v-card>
-      <ImageCard></ImageCard>
+<!--      <v-content>-->
+<!--        <v-btn depressed @click="this.info = 'Second'">Normal</v-btn>-->
+<!--      </v-content>-->
+      <ImageCard />
+
+      <v-btn class="some" color="success">Success</v-btn>
     </v-main>
+    <v-footer app>
+      Copyright
+    </v-footer>
   </v-app>
-  <v-footer app>
-    <!-- -->
-    Copyright
-  </v-footer>
 </template>
 
 <script lang="ts">
@@ -36,7 +39,6 @@ export default defineComponent({
 
   data () {
     return {
-      //
     }
   },
 })

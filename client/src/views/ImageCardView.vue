@@ -1,5 +1,5 @@
 <template>
-  <hello-world />
+  <image-card />
 </template>
 
 <script lang="ts">

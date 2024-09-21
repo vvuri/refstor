@@ -1,6 +1,8 @@
 <template>
   <v-card
       :loading="loading"
+      card-background="purple"
+      card-color="#FF00FF"
       class="mx-auto my-12"
       max-width="374"
   >
