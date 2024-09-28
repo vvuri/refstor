@@ -1,22 +1,17 @@
 <template>
   <v-app>
-<!--    <v-alert>1</v-alert>-->
-
     <v-app-bar app color="primary" dark>
-      <v-icon aria-hidden="false">
-        mdi-menu
-      </v-icon>
+<!--      <v-icon aria-hidden="false">-->
+<!--        mdi-menu-->
+<!--      </v-icon>-->
 <!--          <v-navigation-drawer app>-->
 <!--            Menu-->
 <!--          </v-navigation-drawer>-->
-
-
     </v-app-bar>
     <v-main>
-<!--      <v-content>-->
-<!--        <v-btn depressed @click="this.info = 'Second'">Normal</v-btn>-->
-<!--      </v-content>-->
-      <ImageCard />
+      <add-link />
+
+      <image-card />
 
       <v-btn class="some" color="success">Success</v-btn>
     </v-main>
@@ -29,12 +24,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ImageCard from "@/components/ImageCard.vue";
+import AddLink from "@/components/AddLink.vue";
 
 export default defineComponent({
   name: 'App',
 
   components: {
     ImageCard,
+    AddLink,
   },
 
   data () {
