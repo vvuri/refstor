@@ -1,13 +1,14 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+<!--    <v-app-bar app color="primary" dark>-->
 <!--      <v-icon aria-hidden="false">-->
 <!--        mdi-menu-->
 <!--      </v-icon>-->
 <!--          <v-navigation-drawer app>-->
 <!--            Menu-->
 <!--          </v-navigation-drawer>-->
-    </v-app-bar>
+<!--    </v-app-bar>-->
+    <side-bar />
     <v-main>
       <add-link />
 
@@ -25,6 +26,7 @@
 import { defineComponent } from 'vue'
 import ImageCard from "@/components/ImageCard.vue";
 import AddLink from "@/components/AddLink.vue";
+import SideBar from "@/components/SideBar.vue"
 
 export default defineComponent({
   name: 'App',
@@ -32,6 +34,7 @@ export default defineComponent({
   components: {
     ImageCard,
     AddLink,
+    SideBar,
   },
 
   data () {
