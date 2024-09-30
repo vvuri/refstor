@@ -1,20 +1,13 @@
 <template>
   <v-app>
-<!--    <v-app-bar app color="primary" dark>-->
-<!--      <v-icon aria-hidden="false">-->
-<!--        mdi-menu-->
-<!--      </v-icon>-->
-<!--          <v-navigation-drawer app>-->
-<!--            Menu-->
-<!--          </v-navigation-drawer>-->
-<!--    </v-app-bar>-->
     <side-bar />
     <v-main>
       <add-link />
 
-      <image-card />
+<!--      <image-card />-->
+      <image-gllary />
 
-      <v-btn class="some" color="success">Success</v-btn>
+<!--      <v-btn class="some" color="success">Success</v-btn>-->
     </v-main>
     <v-footer app>
       Copyright
@@ -27,6 +20,8 @@ import { defineComponent } from 'vue'
 import ImageCard from "@/components/ImageCard.vue";
 import AddLink from "@/components/AddLink.vue";
 import SideBar from "@/components/SideBar.vue"
+import ImageGllary from "@/components/ImageGallary.vue";
+
 
 export default defineComponent({
   name: 'App',
@@ -35,6 +30,7 @@ export default defineComponent({
     ImageCard,
     AddLink,
     SideBar,
+    ImageGllary,
   },
 
   data () {

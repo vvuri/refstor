@@ -1,6 +1,7 @@
 <template>
 <!--  <v-card>-->
 <!--    <v-layout>-->
+
       <v-navigation-drawer
           expand-on-hover
           rail
@@ -23,7 +24,7 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="height: 250px"></v-main>
+<!--      <v-main style="height: 250px"></v-main>-->
 <!--    </v-layout>-->
 <!--  </v-card>-->
 </template>
