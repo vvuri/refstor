@@ -2,7 +2,10 @@
   <v-row>
     <v-col
         v-for="n in 12"
-        cols="3"
+        cols="6"
+        sm="4"
+        md="3"
+        lg="2"
     >
       <v-card>
         <v-img

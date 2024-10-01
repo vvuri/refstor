@@ -1,7 +1,10 @@
 <template>
 <!--  <v-card>-->
 <!--    <v-layout>-->
-
+<!--  <v-app-bar app clipped-left>-->
+<!--    <v-app-bar-nav-icon v-if="!permanent" @click.stop="drawer = !drawer" />-->
+<!--    <v-toolbar-title v-text="title" />-->
+<!--  </v-app-bar>-->
       <v-navigation-drawer
           expand-on-hover
           rail
