@@ -1,5 +1,7 @@
 <template>
-  <v-card class="mx-4 my-2 pa-3">
+  <v-card
+      class="mx-4 my-2 pa-3"
+  >
     <v-row>
       <v-col
           v-for="n in 20"
@@ -8,9 +10,13 @@
           md="3"
           lg="2"
       >
-        <v-card class="rounded-lg">
+        <v-card
+            class="rounded-lg"
+            v-bind="props"
+            @click="getProps(`https://i.pravatar.cc/400?img=${n * 2 + 5}&${p.isNext}`)"
+        >
           <v-img
-              :src="`https://i.pravatar.cc/400?img=${n * 3 + 5}`"
+              :src="`https://i.pravatar.cc/400?img=${n * 2 + 5}&${p.isNext}`"
               aspect-ratio="1"
               class="bg-grey-lighten-2"
               cover
@@ -36,3 +42,13 @@
     </v-row>
   </v-card>
 </template>
+<script setup>
+import {defineProps} from "vue";
+
+const p = defineProps(['isNext'])
+
+const getProps = (url) => {
+  console.log("===>>>", p.isNext, Number(p.isNext), url)
+}
+
+</script>

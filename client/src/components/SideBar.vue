@@ -24,6 +24,20 @@
           <v-list-item prepend-icon="mdi-image-multiple-outline" title="List images" value="shared"></v-list-item>
           <v-list-item prepend-icon="mdi-image-search-outline" title="Search" value="none"></v-list-item>
           <v-list-item prepend-icon="mdi-account-box-outline" title="Contact me" value="none"></v-list-item>
+
+          <v-list-item
+              prepend-icon="mdi-account-box"
+              title="Plus"
+              value="none"
+              @click="selectOption(1)"
+          ></v-list-item>
+          <v-list-item
+              prepend-icon="mdi-account-box-outline"
+              title="Minus"
+              value="none"
+              @click="selectOption(-1)"
+          ></v-list-item>
+
         </v-list>
       </v-navigation-drawer>
 
@@ -31,3 +45,13 @@
 <!--    </v-layout>-->
 <!--  </v-card>-->
 </template>
+<script setup>
+import {defineEmits} from "vue"
+
+const emits = defineEmits(['selectOption'])
+
+const selectOption = (isDelta) => {
+  emits("selectOption", isDelta)
+  console.log("==>>", isDelta)
+}
+</script>
