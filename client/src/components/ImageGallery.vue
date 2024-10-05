@@ -13,10 +13,10 @@
         <v-card
             class="rounded-lg"
             v-bind="props"
-            @click="getProps(`https://i.pravatar.cc/400?img=${n * 2 + 5}&${p.isNext}`)"
+            @click="getProps(`https://i.pravatar.cc/400?img=${n * 2 + 5 + props.isNext}`)"
         >
           <v-img
-              :src="`https://i.pravatar.cc/400?img=${n * 2 + 5}&${p.isNext}`"
+              :src="`https://i.pravatar.cc/400?img=${n * 2 + 5 + props.isNext}`"
               aspect-ratio="1"
               class="bg-grey-lighten-2"
               cover
@@ -45,10 +45,11 @@
 <script setup>
 import {defineProps} from "vue";
 
-const p = defineProps(['isNext'])
+const props = defineProps(['isNext'])
+const next = props.isNext.value
 
 const getProps = (url) => {
-  console.log("===>>>", p.isNext, Number(p.isNext), url)
+  console.log("===>>>", props.isNext, Number(props.isNext.value), url)
 }
 
 </script>
